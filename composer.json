@@ -17,6 +17,10 @@
         "symfony/dependency-injection": "^6.1",
         "symfony/http-kernel": "^6.1",
         "twig/twig": "^3.4"
+    }
+    ,
+    "require-dev": {
+        "roave/security-advisories": "dev-latest"
     },
     "autoload": {
         "psr-4": {
@@ -24,6 +28,9 @@
         }
     },
     "extra": {
+        "branch-alias": {
+            "dev-main": "1.1-dev"
+        },
         "symfony": {
             "require": "^6.1"
         }
