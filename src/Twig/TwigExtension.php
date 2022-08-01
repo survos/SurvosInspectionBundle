@@ -1,0 +1,133 @@
+<?php
+
+namespace Survos\InspectionBundle\Twig;
+
+use ApiPlatform\Api\IriConverterInterface;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\GetCollection;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
+use function Symfony\Component\String\u;
+
+class TwigExtension extends AbstractExtension
+{
+    public function __construct(
+        private IriConverterInterface $iriConverter,
+    )
+    {
+    }
+
+    public function getFilters(): array
+    {
+        return [
+            // If your filter generates SAFE HTML, you should add a third
+            // parameter: ['is_safe' => ['html']]
+            // Reference: https://twig.symfony.com/doc/3.x/advanced.html#automatic-escaping
+//            new TwigFilter('datatable', [$this, 'datatable'], ['needs_environment' => true, 'is_safe' => ['html']]),
+        ];
+    }
+
+
+    public function getFunctions(): array
+    {
+        return [
+            new TwigFunction('api_route', [$this, 'apiCollectionRoute']),
+            new TwigFunction('api_item_route', [$this, 'apiItemRoute']),
+            new TwigFunction('api_subresource_route', [$this, 'apiCollectionSubresourceRoute']),
+            new TwigFunction('sortable_fields', [$this, 'sortableFields']),
+            new TwigFunction('searchable_fields', [$this, 'searchableFields']),
+            new TwigFunction('search_builder_fields', [$this, 'searchBuilderFields']),
+        ];
+    }
+
+    public function sortableFields(string $class): array
+    {
+        assert(class_exists($class), $class);
+        $reflector = new \ReflectionClass($class);
+        foreach ($reflector->getAttributes() as $attribute) {
+            if (!u($attribute->getName())->endsWith('ApiFilter')) {
+                continue;
+            }
+            $filter = $attribute->getArguments()[0];
+            if (u($filter)->endsWith('OrderFilter')) {
+
+                $orderProperties = $attribute->getArguments()['properties'];
+                return $orderProperties;
+            }
+        }
+        return [];
+    }
+
+    public function searchableFields(string $class): array
+    {
+        $reflector = new \ReflectionClass($class);
+        foreach ($reflector->getAttributes() as $attribute) {
+            if (!u($attribute->getName())->endsWith('ApiFilter')) {
+                continue;
+            }
+            $filter = $attribute->getArguments()[0];
+            if (u($filter)->endsWith('MultiFieldSearchFilter')) {
+                return $attribute->getArguments()['properties'];
+            }
+        }
+
+        return [];
+    }
+
+    public function apiCollectionRoute($entityOrClass)
+    {
+
+        $x = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection());
+        return $x;
+    }
+
+    public function apiItemRoute($entity)
+    {
+        $x = $this->iriConverter->getIriFromResource($entity);
+        return $x;
+    }
+
+    public function apiCollectionSubresourceRoute($entityOrClass, RouteParametersInterface $parent)
+    {
+//        #[ApiResource(
+//            uriTemplate: '/companies/{companyId}/employees',
+//            uriVariables: [
+//                'companyId' => new Link(fromClass: Company::class, toProperty: 'company'),
+//            ],
+//            operations: [ new GetCollection() ]
+//        )]
+        $iri = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection(), context: $context = [
+            'uri_variables' => $parent->getrp()
+        ]);
+        return $iri;
+    }
+
+
+    public function searchBuilderFields(string $class, array $normalizedColumns): array
+    {
+
+        $reflector = new \ReflectionClass($class);
+        $columnNumbers = [];
+        foreach ($reflector->getAttributes() as $attribute) {
+            if (!u($attribute->getName())->endsWith('ApiFilter')) {
+                continue;
+            }
+            $filter = $attribute->getArguments()[0];
+
+            // @todo: handle other filters
+            if ($filter === SearchFilter::class) {
+                $searchFields = $attribute->getArguments()['properties'];
+                foreach ($normalizedColumns as $idx => $column)
+                {
+                    if (array_key_exists($column->name, $searchFields)) {
+                        $columnNumbers[] = $idx;
+                    }
+                }
+            }
+        }
+        return $columnNumbers;
+    }
+
+
+
+}
