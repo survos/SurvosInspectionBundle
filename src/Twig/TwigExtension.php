@@ -5,6 +5,7 @@ namespace Survos\InspectionBundle\Twig;
 use ApiPlatform\Api\IriConverterInterface;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\GetCollection;
+use Survos\CoreBundle\Entity\RouteParametersInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use function Symfony\Component\String\u;
