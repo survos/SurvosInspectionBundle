@@ -13,7 +13,7 @@ use function Symfony\Component\String\u;
 class TwigExtension extends AbstractExtension
 {
     public function __construct(
-        private IriConverterInterface $iriConverter,
+        private ?IriConverterInterface $iriConverter = null,
     )
     {
     }
@@ -75,16 +75,25 @@ class TwigExtension extends AbstractExtension
         return [];
     }
 
+    private function getIriConverter(): IriConverterInterface
+    {
+        if (!$this->iriConverter) {
+            throw new \LogicException("Install api-platform/core >= 2.7");
+        }
+        return $this->iriConverter;
+
+    }
+
     public function apiCollectionRoute($entityOrClass)
     {
 
-        $x = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection());
+        $x = $this->getIriConverter()->getIriFromResource($entityOrClass, operation: new GetCollection());
         return $x;
     }
 
     public function apiItemRoute($entity)
     {
-        $x = $this->iriConverter->getIriFromResource($entity);
+        $x = $this->getIriConverter()->getIriFromResource($entity);
         return $x;
     }
 
