@@ -30,9 +30,13 @@ class SurvosInspectionBundle extends AbstractBundle
             $reference = new Reference('api_platform.iri_converter');
 //                dd($reference);
                 if (!$reference->getInvalidBehavior()) {
+//                    dump($reference);
                     $definition->setArgument('$iriConverter', $reference);
                 }
+        $definition->setArgument('$iriConverter', $reference);
+//                dd($reference);
         if (class_exists(Environment::class) && class_exists(IriConverterInterface::class)) {
+
         }
     }
 
