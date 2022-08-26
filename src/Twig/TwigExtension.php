@@ -9,11 +9,12 @@ use Survos\CoreBundle\Entity\RouteParametersInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use function Symfony\Component\String\u;
-
+//use ApiPlatform\Symfony\Routing\IriConverter
+use
 class TwigExtension extends AbstractExtension
 {
     public function __construct(
-        private ?IriConverterInterface $iriConverter = null,
+        private IriConverterInterface|ApiPlatform\Symfony\Routing\IriConverter|null $iriConverter = null,
     )
     {
     }
