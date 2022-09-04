@@ -85,10 +85,9 @@ class TwigExtension extends AbstractExtension
 
     }
 
-    public function apiCollectionRoute($entityOrClass)
+    public function apiCollectionRoute($entityOrClass, array $context = [])
     {
-
-        $x = $this->getIriConverter()->getIriFromResource($entityOrClass, operation: new GetCollection());
+        $x = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection(), context: $context);
         return $x;
     }
 
