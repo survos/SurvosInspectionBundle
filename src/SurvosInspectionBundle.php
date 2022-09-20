@@ -16,32 +16,32 @@ use Twig\Environment;
 
 class SurvosInspectionBundle extends AbstractBundle
 {
-
     protected string $extensionAlias = 'survos_inspection';
 
-    /** @param array<mixed> $config */
+    /**
+     * @param array<mixed> $config
+     */
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-            $definition = $builder
-                ->setDefinition('survos.inspection_twig', new Definition(TwigExtension::class))
-                ->addTag('twig.extension')
-                ->setPublic(false)
-            ;
-//                dd($reference);
-//        $reference = new Reference('api_platform.iri_converter.legacy');
-//        $definition->setArgument('$iriConverter', $reference);
+        $definition = $builder
+            ->setDefinition('survos.inspection_twig', new Definition(TwigExtension::class))
+            ->addTag('twig.extension')
+            ->setPublic(false)
+        ;
+        //                dd($reference);
+        //        $reference = new Reference('api_platform.iri_converter.legacy');
+        //        $definition->setArgument('$iriConverter', $reference);
         $reference = new Reference('api_platform.iri_converter');
         $definition->setArgument('$iriConverter', $reference);
-//                if (!$reference->getInvalidBehavior()) {
-//                    dd($reference);
-//                    $definition->setArgument('$iriConverter', $reference);
-//                } else {
-//                    $reference = new Reference('api_platform.iri_converter.legacy');
-//                    $definition->setArgument('$iriConverter', $reference);
-//                }
-//                dd($reference);
+        //                if (!$reference->getInvalidBehavior()) {
+        //                    dd($reference);
+        //                    $definition->setArgument('$iriConverter', $reference);
+        //                } else {
+        //                    $reference = new Reference('api_platform.iri_converter.legacy');
+        //                    $definition->setArgument('$iriConverter', $reference);
+        //                }
+        //                dd($reference);
         if (class_exists(Environment::class) && class_exists(IriConverterInterface::class)) {
-
         }
     }
 
@@ -54,5 +54,4 @@ class SurvosInspectionBundle extends AbstractBundle
             ?->end();
         ;
     }
-
 }

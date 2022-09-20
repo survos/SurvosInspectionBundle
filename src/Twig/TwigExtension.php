@@ -9,14 +9,14 @@ use Survos\CoreBundle\Entity\RouteParametersInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use function Symfony\Component\String\u;
+
 //use ApiPlatform\Symfony\Routing\IriConverter
 
 class TwigExtension extends AbstractExtension
 {
     public function __construct(
         private IriConverterInterface|null $iriConverter = null,
-    )
-    {
+    ) {
     }
 
     public function getFilters(): array
@@ -25,10 +25,9 @@ class TwigExtension extends AbstractExtension
             // If your filter generates SAFE HTML, you should add a third
             // parameter: ['is_safe' => ['html']]
             // Reference: https://twig.symfony.com/doc/3.x/advanced.html#automatic-escaping
-//            new TwigFilter('datatable', [$this, 'datatable'], ['needs_environment' => true, 'is_safe' => ['html']]),
+            //            new TwigFilter('datatable', [$this, 'datatable'], ['needs_environment' => true, 'is_safe' => ['html']]),
         ];
     }
-
 
     public function getFunctions(): array
     {
@@ -47,12 +46,11 @@ class TwigExtension extends AbstractExtension
         assert(class_exists($class), $class);
         $reflector = new \ReflectionClass($class);
         foreach ($reflector->getAttributes() as $attribute) {
-            if (!u($attribute->getName())->endsWith('ApiFilter')) {
+            if (! u($attribute->getName())->endsWith('ApiFilter')) {
                 continue;
             }
             $filter = $attribute->getArguments()[0];
             if (u($filter)->endsWith('OrderFilter')) {
-
                 $orderProperties = $attribute->getArguments()['properties'];
                 return $orderProperties;
             }
@@ -64,7 +62,7 @@ class TwigExtension extends AbstractExtension
     {
         $reflector = new \ReflectionClass($class);
         foreach ($reflector->getAttributes() as $attribute) {
-            if (!u($attribute->getName())->endsWith('ApiFilter')) {
+            if (! u($attribute->getName())->endsWith('ApiFilter')) {
                 continue;
             }
             $filter = $attribute->getArguments()[0];
@@ -78,11 +76,10 @@ class TwigExtension extends AbstractExtension
 
     private function getIriConverter(): IriConverterInterface
     {
-        if (!$this->iriConverter) {
+        if (! $this->iriConverter) {
             throw new \LogicException("Install api-platform/core >= 2.7");
         }
         return $this->iriConverter;
-
     }
 
     public function apiCollectionRoute($entityOrClass, array $context = [])
@@ -99,27 +96,25 @@ class TwigExtension extends AbstractExtension
 
     public function apiCollectionSubresourceRoute($entityOrClass, RouteParametersInterface $parent)
     {
-//        #[ApiResource(
-//            uriTemplate: '/companies/{companyId}/employees',
-//            uriVariables: [
-//                'companyId' => new Link(fromClass: Company::class, toProperty: 'company'),
-//            ],
-//            operations: [ new GetCollection() ]
-//        )]
+        //        #[ApiResource(
+        //            uriTemplate: '/companies/{companyId}/employees',
+        //            uriVariables: [
+        //                'companyId' => new Link(fromClass: Company::class, toProperty: 'company'),
+        //            ],
+        //            operations: [ new GetCollection() ]
+        //        )]
         $iri = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection(), context: $context = [
-            'uri_variables' => $parent->getrp()
+            'uri_variables' => $parent->getrp(),
         ]);
         return $iri;
     }
 
-
     public function searchBuilderFields(string $class, array $normalizedColumns): array
     {
-
         $reflector = new \ReflectionClass($class);
         $columnNumbers = [];
         foreach ($reflector->getAttributes() as $attribute) {
-            if (!u($attribute->getName())->endsWith('ApiFilter')) {
+            if (! u($attribute->getName())->endsWith('ApiFilter')) {
                 continue;
             }
             $filter = $attribute->getArguments()[0];
@@ -127,8 +122,7 @@ class TwigExtension extends AbstractExtension
             // @todo: handle other filters
             if ($filter === SearchFilter::class) {
                 $searchFields = $attribute->getArguments()['properties'];
-                foreach ($normalizedColumns as $idx => $column)
-                {
+                foreach ($normalizedColumns as $idx => $column) {
                     if (array_key_exists($column->name, $searchFields)) {
                         $columnNumbers[] = $idx;
                     }
@@ -137,7 +131,4 @@ class TwigExtension extends AbstractExtension
         }
         return $columnNumbers;
     }
-
-
-
 }
