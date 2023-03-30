@@ -3,6 +3,7 @@
 namespace Survos\InspectionBundle\Twig;
 
 use ApiPlatform\Api\IriConverterInterface;
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\GetCollection;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
@@ -16,7 +17,8 @@ class TwigExtension extends AbstractExtension
 {
     public function __construct(
         private IriConverterInterface|null $iriConverter = null,
-    ) {
+    )
+    {
     }
 
     public function getFilters(): array
@@ -46,7 +48,7 @@ class TwigExtension extends AbstractExtension
         assert(class_exists($class), $class);
         $reflector = new \ReflectionClass($class);
         foreach ($reflector->getAttributes() as $attribute) {
-            if (! u($attribute->getName())->endsWith('ApiFilter')) {
+            if (!u($attribute->getName())->endsWith('ApiFilter')) {
                 continue;
             }
             $filter = $attribute->getArguments()[0];
@@ -62,7 +64,7 @@ class TwigExtension extends AbstractExtension
     {
         $reflector = new \ReflectionClass($class);
         foreach ($reflector->getAttributes() as $attribute) {
-            if (! u($attribute->getName())->endsWith('ApiFilter')) {
+            if (!u($attribute->getName())->endsWith('ApiFilter')) {
                 continue;
             }
             $filter = $attribute->getArguments()[0];
@@ -76,7 +78,7 @@ class TwigExtension extends AbstractExtension
 
     private function getIriConverter(): IriConverterInterface
     {
-        if (! $this->iriConverter) {
+        if (!$this->iriConverter) {
             throw new \LogicException("Install api-platform/core >= 2.7");
         }
         return $this->iriConverter;
@@ -114,21 +116,41 @@ class TwigExtension extends AbstractExtension
         $reflector = new \ReflectionClass($class);
         $columnNumbers = [];
         foreach ($reflector->getAttributes() as $attribute) {
-            if (! u($attribute->getName())->endsWith('ApiFilter')) {
+
+            if (!u($attribute->getName())->endsWith('ApiFilter')) {
                 continue;
             }
-            $filter = $attribute->getArguments()[0];
+            $filterClass = $attribute->getName();
+            $filterReflector = new \ReflectionClass($filterClass);
+// this is the Doctrine ORM interface ONLY
+//            if ($reflector->implementsInterface(FilterInterface::class))
+//            {
+//                dd("Yep!");
+//            }
 
-            // @todo: handle other filters
-            if ($filter === SearchFilter::class) {
+            $filter = $attribute->getArguments()[0];
+// @todo: handle other filters
+            if (in_array($filter, [RangeFilter::class, SearchFilter::class])) {
                 $searchFields = $attribute->getArguments()['properties'];
+                if ($filter === SearchFilter::class) {
+//                    dd($searchFields, $filter);
+                }
                 foreach ($normalizedColumns as $idx => $column) {
-                    if (array_key_exists($column->name, $searchFields)) {
+//                    dump($column->name);
+                    if (in_array($column->name, $searchFields)) {
                         $columnNumbers[] = $idx;
                     }
+
+//                    if (array_key_exists($column->name, $searchFields)) {
+//                        $columnNumbers[] = $idx;
+//                    }
                 }
             }
         }
+
+
         return $columnNumbers;
     }
+
+
 }
