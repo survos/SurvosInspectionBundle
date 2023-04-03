@@ -113,42 +113,12 @@ class TwigExtension extends AbstractExtension
 
     public function searchBuilderFields(string $class, array $normalizedColumns): array
     {
-        $reflector = new \ReflectionClass($class);
         $columnNumbers = [];
-        foreach ($reflector->getAttributes() as $attribute) {
-
-            if (!u($attribute->getName())->endsWith('ApiFilter')) {
-                continue;
-            }
-            $filterClass = $attribute->getName();
-            $filterReflector = new \ReflectionClass($filterClass);
-// this is the Doctrine ORM interface ONLY
-//            if ($reflector->implementsInterface(FilterInterface::class))
-//            {
-//                dd("Yep!");
-//            }
-
-            $filter = $attribute->getArguments()[0];
-// @todo: handle other filters
-            if (in_array($filter, [RangeFilter::class, SearchFilter::class])) {
-                $searchFields = $attribute->getArguments()['properties'];
-                if ($filter === SearchFilter::class) {
-//                    dd($searchFields, $filter);
-                }
-                foreach ($normalizedColumns as $idx => $column) {
-//                    dump($column->name);
-                    if (in_array($column->name, $searchFields)) {
-                        $columnNumbers[] = $idx;
-                    }
-
-//                    if (array_key_exists($column->name, $searchFields)) {
-//                        $columnNumbers[] = $idx;
-//                    }
-                }
+        foreach ($normalizedColumns as $idx => $normalizedColumn) {
+            if ($normalizedColumn->searchable) {
+                $columnNumbers[] = $idx;
             }
         }
-
-
         return $columnNumbers;
     }
 
