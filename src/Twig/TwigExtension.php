@@ -37,9 +37,9 @@ class TwigExtension extends AbstractExtension
             new TwigFunction('api_route', [$this, 'apiCollectionRoute']),
             new TwigFunction('api_item_route', [$this, 'apiItemRoute']),
             new TwigFunction('api_subresource_route', [$this, 'apiCollectionSubresourceRoute']),
-            new TwigFunction('sortable_fields', [$this, 'sortableFields']),
-            new TwigFunction('searchable_fields', [$this, 'searchableFields']),
-            new TwigFunction('search_builder_fields', [$this, 'searchBuilderFields']),
+//            new TwigFunction('sortable_fields', [$this, 'sortableFields']),
+//            new TwigFunction('searchable_fields', [$this, 'searchableFields']),
+//            new TwigFunction('search_builder_fields', [$this, 'searchBuilderFields']),
         ];
     }
 
