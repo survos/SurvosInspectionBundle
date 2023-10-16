@@ -28,11 +28,9 @@ class SurvosInspectionBundle extends AbstractBundle
             ->addTag('twig.extension')
             ->setPublic(false)
         ;
-        //                dd($reference);
-        //        $reference = new Reference('api_platform.iri_converter.legacy');
-        //        $definition->setArgument('$iriConverter', $reference);
-        $reference = new Reference('api_platform.iri_converter');
-        $definition->setArgument('$iriConverter', $reference);
+
+        $definition
+            ->setArgument('$iriConverter', new Reference('api_platform.symfony.iri_converter'));
         //                if (!$reference->getInvalidBehavior()) {
         //                    dd($reference);
         //                    $definition->setArgument('$iriConverter', $reference);
