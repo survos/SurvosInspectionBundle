@@ -6,7 +6,6 @@ use ApiPlatform\Api\IriConverterInterface;
 use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Symfony\Routing\IriConverter;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -17,7 +16,7 @@ use function Symfony\Component\String\u;
 class TwigExtension extends AbstractExtension
 {
     public function __construct(
-        private IriConverter|null $iriConverter = null,
+        private IriConverterInterface|null $iriConverter = null,
     )
     {
     }
