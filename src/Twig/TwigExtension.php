@@ -3,13 +3,12 @@
 namespace Survos\InspectionBundle\Twig;
 
 use ApiPlatform\Metadata\IriConverterInterface;
-use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Symfony\Routing\IriConverter;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+
 use function Symfony\Component\String\u;
 
 //use ApiPlatform\Symfony\Routing\IriConverter
@@ -18,18 +17,7 @@ class TwigExtension extends AbstractExtension
 {
     public function __construct(
         private IriConverter|null $iriConverter = null,
-    )
-    {
-    }
-
-    public function getFilters(): array
-    {
-        return [
-            // If your filter generates SAFE HTML, you should add a third
-            // parameter: ['is_safe' => ['html']]
-            // Reference: https://twig.symfony.com/doc/3.x/advanced.html#automatic-escaping
-            //            new TwigFilter('datatable', [$this, 'datatable'], ['needs_environment' => true, 'is_safe' => ['html']]),
-        ];
+    ) {
     }
 
     public function getFunctions(): array
@@ -43,6 +31,7 @@ class TwigExtension extends AbstractExtension
 //            new TwigFunction('search_builder_fields', [$this, 'searchBuilderFields']),
         ];
     }
+
 
     public function sortableFields(string $class): array
     {
@@ -97,7 +86,7 @@ class TwigExtension extends AbstractExtension
         return $x;
     }
 
-    public function apiCollectionSubresourceRoute($entityOrClass, RouteParametersInterface $parent)
+    public function apiCollectionSubresourceRoute($entityOrClass, RouteParametersInterface $parent): ?string
     {
         //        #[ApiResource(
         //            uriTemplate: '/companies/{companyId}/employees',
@@ -122,6 +111,4 @@ class TwigExtension extends AbstractExtension
         }
         return $columnNumbers;
     }
-
-
 }

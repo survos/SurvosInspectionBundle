@@ -1,5 +1,5 @@
 parameters:
-    level: 4
+    level: 5
     inferPrivatePropertyTypeFromConstructor: true
     paths:
         - ./src/
@@ -11,10 +11,15 @@ parameters:
        analyse:
                   - ./vendor
 
+    reportUnmatchedIgnoredErrors: false
+#    checkMissingIterableValueType: false
+#    checkGenericClassInNonGenericObjectType: false
     ignoreErrors:
+        - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)\.#'
+        # Only available in ArrayNodeDefinition which is given
         # False positive: clients are not dependencies of this project.
 #        -
-#            message: '#Return typehint of method KnpU\\OAuth2ClientBundle\\Client\\Provider\\[a-zA-Z0-9\\_]+::fetchUserFromToken\(\) has invalid type [a-zA-Z0-9\\_]#'
+#            message: '#Call to an undefined method Symfony\Component\Config\Definition\Builder\NodeDefinition::children#'
 #            path: ./src/Client/Provider
 #        -
 #            message: '#Return typehint of method KnpU\\OAuth2ClientBundle\\Client\\Provider\\[a-zA-Z0-9\\_]+::fetchUser\(\) has invalid type [a-zA-Z0-9\\_]#'
