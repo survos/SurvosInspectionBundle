@@ -2,7 +2,7 @@
 
 namespace Survos\InspectionBundle\Twig;
 
-use ApiPlatform\Metadata\IriConverterInterface;
+use ApiPlatform\Api\IriConverterInterface;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Symfony\Routing\IriConverter;
 use Survos\CoreBundle\Entity\RouteParametersInterface;

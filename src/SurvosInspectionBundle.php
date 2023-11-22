@@ -9,9 +9,6 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
-use Twig\Environment;
 
 class SurvosInspectionBundle extends AbstractBundle
 {
