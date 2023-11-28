@@ -5,6 +5,7 @@ namespace Survos\InspectionBundle;
 use Survos\InspectionBundle\Twig\TwigExtension;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
@@ -25,7 +26,9 @@ class SurvosInspectionBundle extends AbstractBundle
             ->setPublic(false);
 
         $definition
-            ->setArgument('$iriConverter', new Reference('api_platform.symfony.iri_converter'));
+            ->setArgument('$iriConverter',
+                new Reference('api_platform.symfony.iri_converter', ContainerInterface::NULL_ON_INVALID_REFERENCE)
+            );
     }
 
     public function configure(DefinitionConfigurator $definition): void
