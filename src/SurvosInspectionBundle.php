@@ -2,7 +2,9 @@
 
 namespace Survos\InspectionBundle;
 
+use Survos\InspectionBundle\Services\InspectionService;
 use Survos\InspectionBundle\Twig\TwigExtension;
+use Survos\WorkflowBundle\Service\WorkflowHelperService;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -20,6 +22,13 @@ class SurvosInspectionBundle extends AbstractBundle
      */
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
+        $builder->autowire( InspectionService::class)
+            ->setArgument('$resourceMetadataCollectionFactory', new Reference('api_platform.metadata.resource.metadata_collection_factory.cached'))
+            ->setArgument('$router', new Reference('router'))
+            ->setAutoconfigured(true)
+        ;
+
+
         $definition = $builder
             ->setDefinition('survos.inspection_twig', new Definition(TwigExtension::class))
             ->addTag('twig.extension')
