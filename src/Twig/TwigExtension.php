@@ -3,6 +3,7 @@
 namespace Survos\InspectionBundle\Twig;
 
 use ApiPlatform\Api\IriConverterInterface;
+use ApiPlatform\Metadata\Exception\InvalidArgumentException;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Symfony\Routing\IriConverter;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
@@ -74,9 +75,15 @@ class TwigExtension extends AbstractExtension
         return $this->iriConverter;
     }
 
-    public function apiCollectionRoute($entityOrClass, array $context = [])
+    public function apiCollectionRoute($entityOrClass, array $context = []): ?string
     {
-        $x = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection(), context: $context);
+
+        try {
+            // this won't work if there are multiple GetCollection routes
+            $x = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection(), context: $context);
+        } catch (InvalidArgumentException $exception) {
+            dd($exception);
+        }
         return $x;
     }
 
