@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Resource\Factory\ResourceMetadataCollectionFactoryInter
 use Survos\ApiGrid\State\MeiliSearchStateProvider;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class InspectionService
 {
@@ -33,10 +34,21 @@ class InspectionService
                     // we want the route, not the path
 //                    $urls[$operation->getProvider()] = $operation->getName();
                     $route = $this->router->getRouteCollection()->get($operation->getName());
+                    // need to slugify routes
+                    $routeSlug = (new AsciiSlugger())->slug($operation->getName())->toString();
+                    $routes[$routeSlug] = [
+                        'opName' => $operation->getName(),
+                        'uriVaraibles' => $operation->getUriVariables()
+                    ];
+                    $urls[$operation->getProvider()] = $operation->getName(); // $route;
+                    continue;
                     $params = [];
                     $provider = $operation->getProvider();
                     if ($provider === MeiliSearchStateProvider::class) {
-                        $params['indexName'] = (new \ReflectionClass($resourceClass))->getShortName();
+                        foreach (array_keys($operation->getUriVariables()) as $var) {
+                            // total hack
+                            $params[$var] = (new \ReflectionClass($resourceClass))->getShortName();
+                        }
                     }
                     $url = $this->urlGenerator->generate($operation->getName(), $params);
                     $urls[$operation->getProvider()] = $url;
@@ -49,7 +61,8 @@ class InspectionService
 
             }
         }
-        return $urls;
+        return $routes;
+//        return $urls;
     }
 
 
