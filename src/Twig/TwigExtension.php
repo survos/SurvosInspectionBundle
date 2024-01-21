@@ -3,10 +3,12 @@
 namespace Survos\InspectionBundle\Twig;
 
 use ApiPlatform\Api\IriConverterInterface;
+use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\Metadata\Exception\InvalidArgumentException;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Symfony\Routing\IriConverter;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
+use Survos\InspectionBundle\Services\InspectionService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -17,6 +19,7 @@ use function Symfony\Component\String\u;
 class TwigExtension extends AbstractExtension
 {
     public function __construct(
+        private InspectionService $inspectionService,
         private IriConverter|null $iriConverter = null,
     ) {
     }
@@ -78,9 +81,16 @@ class TwigExtension extends AbstractExtension
     public function apiCollectionRoute($entityOrClass, array $context = []): ?string
     {
 
+        $urls = $this->inspectionService->getAllUrlsForResource($entityOrClass);
+        if (count($urls)) {
+            $x = $urls[array_key_first($urls)]['opName'];
+        } else {
+            $x = null;
+        }
         try {
             // this won't work if there are multiple GetCollection routes
-            $x = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection(), context: $context);
+//            $x = $this->inspectionService->getAllUrlsForResource($entityOrClass)[CollectionProvider::class];
+//            $x = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection(), context: $context);
         } catch (InvalidArgumentException $exception) {
             dd($exception);
         }

@@ -32,6 +32,7 @@ class SurvosInspectionBundle extends AbstractBundle
         $definition = $builder
             ->setDefinition('survos.inspection_twig', new Definition(TwigExtension::class))
             ->addTag('twig.extension')
+            ->setArgument('$inspectionService', new Reference(InspectionService::class))
             ->setPublic(false);
 
         $definition
@@ -46,6 +47,6 @@ class SurvosInspectionBundle extends AbstractBundle
         $definition->rootNode()
             ->children()
             ->booleanNode('debug')->defaultValue(false)->end()
-            ?->end();;
+            ?->end();
     }
 }
