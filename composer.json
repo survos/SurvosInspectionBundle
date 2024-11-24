@@ -1,7 +1,6 @@
 {
     "name": "survos/inspection-bundle",
     "description": "Inspects Doctrine entities with APIPlatform attributes",
-    "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
         {
@@ -9,18 +8,19 @@
             "email": "tacman@gmail.com"
         }
     ],
+    "type": "symfony-bundle",
     "require": {
-        "php": "^8.2",
-        "survos/core-bundle": "^1.5.395",
-        "symfony/config": "^6.3 || ^7.0",
-        "symfony/dependency-injection": "^6.3 || ^7.0",
-        "symfony/http-kernel": "^6.3 || ^7.0",
+        "php": "^8.3",
+        "survos/core-bundle": "^1.5.396",
+        "symfony/config": "^6.4 || ^7.1",
+        "symfony/dependency-injection": "^6.4 || ^7.1",
+        "symfony/http-kernel": "^6.4 || ^7.1",
         "twig/twig": "^3.4",
-        "symfony/string": "^6.3 || ^7.0 "
+        "symfony/string": "^6.4 || ^7.1"
     },
     "require-dev": {
         "api-platform/core": "^3.2",
-        "phpstan/phpstan": "^1.8",
+        "phpstan/phpstan": "^2.0",
         "roave/security-advisories": "dev-latest"
     },
     "autoload": {
@@ -33,7 +33,7 @@
             "dev-main": "1.6-dev"
         },
         "symfony": {
-            "require": "^6.3 || ^7.0"
+            "require": "^6.4 || ^7.1"
         }
     },
     "conflict": {
