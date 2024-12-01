@@ -19,9 +19,11 @@
         "symfony/string": "^6.4 || ^7.1"
     },
     "require-dev": {
-        "api-platform/core": "^3.2",
+        "api-platform/core": "^3.2||^4.0",
         "phpstan/phpstan": "^2.0",
-        "roave/security-advisories": "dev-latest"
+        "roave/security-advisories": "dev-latest",
+        "symfony/routing": "^7.2",
+        "survos/api-grid-bundle": "^1.5"
     },
     "autoload": {
         "psr-4": {

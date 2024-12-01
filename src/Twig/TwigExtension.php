@@ -87,13 +87,13 @@ class TwigExtension extends AbstractExtension
         } else {
             $x = null;
         }
-        try {
-            // this won't work if there are multiple GetCollection routes
-//            $x = $this->inspectionService->getAllUrlsForResource($entityOrClass)[CollectionProvider::class];
-//            $x = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection(), context: $context);
-        } catch (InvalidArgumentException $exception) {
-            dd($exception);
-        }
+//        try {
+//            // this won't work if there are multiple GetCollection routes
+////            $x = $this->inspectionService->getAllUrlsForResource($entityOrClass)[CollectionProvider::class];
+////            $x = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection(), context: $context);
+//        } catch (InvalidArgumentException $exception) {
+//            dd($exception);
+//        }
         return $x;
     }
 

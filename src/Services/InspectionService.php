@@ -16,14 +16,15 @@ class InspectionService
 {
     public function __construct(
         private readonly ResourceMetadataCollectionFactoryInterface $resourceMetadataCollectionFactory,
-        private readonly RouterInterface $router,
-        private readonly UrlGeneratorInterface $urlGenerator
+        private readonly ?RouterInterface $router=null,
+        private readonly ?UrlGeneratorInterface $urlGenerator=null
     ) {
     }
 
     public function getAllUrlsForResource(string $resourceClass): array
     {
         $urls = [];
+        $routes = [];
         // yikes!  Now the route is here.
 
 
@@ -41,7 +42,8 @@ class InspectionService
                         'uriVaraibles' => $operation->getUriVariables()
                     ];
                     $urls[$operation->getProvider()] = $operation->getName(); // $route;
-                    continue;
+//                    continue;
+
                     $params = [];
                     $provider = $operation->getProvider();
                     if ($provider === MeiliSearchStateProvider::class) {
@@ -70,16 +72,16 @@ class InspectionService
     {
         return $this->getAllUrlsForResource($resourceClass)[MeiliSearchStateProvider::class]??null;
 
-        foreach ($this->resourceMetadataCollectionFactory->create($resourceClass) as $resourceMetadata) {
-            foreach ($resourceMetadata->getOperations() as $operation) {
-                if ($operation::class === GetCollection::class) {
-                    $provider = $operation->getProvider();
-                    if ($provider === MeiliSearchStateProvider::class) {
-                    }
-                }
-            }
-
-        }
+//        foreach ($this->resourceMetadataCollectionFactory->create($resourceClass) as $resourceMetadata) {
+//            foreach ($resourceMetadata->getOperations() as $operation) {
+//                if ($operation::class === GetCollection::class) {
+//                    $provider = $operation->getProvider();
+//                    if ($provider === MeiliSearchStateProvider::class) {
+//                    }
+//                }
+//            }
+//
+//        }
 
     }
 }
