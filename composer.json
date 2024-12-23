@@ -19,7 +19,7 @@
         "symfony/string": "^6.4 || ^7.1"
     },
     "require-dev": {
-        "api-platform/core": "^3.2||^4.0",
+        "api-platform/core": "^4.0",
         "phpstan/phpstan": "^2.0",
         "roave/security-advisories": "dev-latest",
         "symfony/routing": "^7.2",
