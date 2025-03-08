@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AnalysisController!{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://cdn.form.io/formiojs/formio.full.min.css'>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+<script src='https://cdn.form.io/formiojs/formio.full.min.js'></script>
+<script type='text/javascript'>
+    window.onload = function() {
+        Formio.builder(document.getElementById('builder'), {}, {});
+    };
+</script>
+{% endblock %}
+{% block body %}
+
+    <div id='builder'></div>
+
+{% endblock %}

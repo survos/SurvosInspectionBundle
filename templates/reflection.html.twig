@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AnalysisController!{% endblock %}
+
+{% block body %}
+
+
+        {% for class, r in classes %}
+            <h3>{{ class|trans }}</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>name</th>
+{#                    <th>class</th>#}
+                    <th>modifiers</th>
+                    <th>attributes</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for p in r.properties %}
+                    <tr>
+{#                        <td>{{ dump(r) }}</td>#}
+                        <td>{{ p.name }}</td>
+{#                        <td>{{ p.class }}</td>#}
+                        <td>
+                            {% for attr in p.attributes %}
+                                #[{{ attr.name|short_class }}
+                                {% if attr.arguments is iterable and attr.arguments|array_is_list %}
+                                    ({{ attr.arguments|json_encode }})
+                                    <ol>
+                                    {% for a in attr.arguments %}
+                                        <li>
+                                            ({{ a|json_encode }})
+                                        </li>
+
+                                    {% endfor %}
+                                    </ol>
+                                {% else %}
+                                    ({{ attr.arguments|json_encode }})
+                                {% endif %}
+                                ]<br />
+                            {% endfor %}
+                            <b>
+
+{#                            {{ p.modifiers|json_encode }}#}
+                            {{ p.isFinal ? 'final'  }}
+                            {{ p.isAbstract ? 'abstract'  }}
+                            {{ p.isPublic ? 'public'  }}
+                            {{ p.isPrivate ? 'private'  }}
+                            {% if p.type|default(false) %}
+                                {{ p.type|is_array ? p.type|join('|') : p.type }}
+                            {% endif %}
+                            ${{ p.name }};
+                            </b>
+
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+                <b>Class {{ class}} Attributes</b>
+                <ul>
+                    {% for a in r.attributes %}
+                        <li>
+                            {{ _self.attribute(a) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <b>Class {{ class }} Properties</b>
+                <ul>
+                    {% for p in r.properties %}
+                        <li>
+{#                            @todo: modifiernames in reflectionProperty#}
+{#                            {{ p.modifiers }}#}
+                            {{ p.type }}
+                            ${{ p.name }}
+
+                        <ul>
+
+                        {% for a in p.attributes %}
+                            <li>
+                                {{ _self.attribute(a) }}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <b>Class {{ class }} Methods</b>
+                <ul>
+                    {% for a in r.methods %}
+                        <li>
+                            {{ _self.attribute(a) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+
+        {% endfor %}
+{% endblock %}
+
+{% macro attribute(a) %}
+{{ a.name|short_class }}
+    ({{ a.arguments|default(false) ? a.arguments|json_encode }})
+{% endmacro %}

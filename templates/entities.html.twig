@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AnalysisController!{% endblock %}
+
+{% block body %}
+
+{#    {% for schema in spec.components %}#}
+{#        {{ dump(schema) }}#}
+{#    {% endfor %}#}
+{% set schemas = spec.components.schemas %}
+<h2>{{ schemas|length }} Schemas</h2>
+    {% for code, schema in schemas %}
+        <h3>{{ code }} {{ schema.type }}</h3>
+{#        {% component grid with {#}
+{#            data: schema.properties|values,#}
+{#            columns:#}
+{#        } %}#}
+{#        {{ component('datatable', {#}
+{#            data: schemas#}
+{#        }) }}#}
+        <table class="table">
+            <tbody>
+            {{ dump(schema) }}
+
+
+            {% for code, property in schema.properties|default([]) %}
+                <tr>
+                    <td>
+                        {{ code }}
+                    </td>
+                    <td>
+                        {% if property.type|default(false) %}
+                        {{ property.type|is_array ? property.type|join('|') : property.type }}
+                        {% endif %}
+                        ${{ code }}
+{#                        {{ property.type|default('') }}#}
+                    </td>
+{#                    <td>#}
+{#                        {{ property.description|default('') }}#}
+{#                    </td>#}
+                    <td>
+                        {% if loop.first  %}
+                        {% endif %}
+                        {{ dump(property) }}
+                        {{ property|json_encode }}
+
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endfor %}
+
+
+{% endblock %}
+
+{% block simple %}
+        {% for schema in schemas %}
+            <h3>{{ schema.type }}</h3>
+            <ul>
+                {% for property in schema.properties %}
+                    <li>
+                        {% if loop.first  %}
+                            {# {{ dump(property) }} #}
+                        {% endif %}
+                        {{ property|json_encode }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+
+{% endblock %}
+    {% block reflection %}
+        {% for class, r in classes %}
+            <h3>{{ class|trans }}</h3>
+
+                <b>Class Attributes</b>
+                <ul>
+                    {% for a in r.attributes %}
+                        <li>
+                            {{ _self.attribute(a) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <b>Class Properties</b>
+                <ul>
+                    {% for p in r.properties %}
+                        <li>
+                            ${{ p.name }}
+                        <ul>
+
+                        {% for a in p.attributes %}
+                            <li>
+                                {{ _self.attribute(a) }}
+                            </li>
+                        {% endfor %}
+                        </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <b>Class Methods</b>
+                <ul>
+                    {% for a in r.methods %}
+                        <li>
+                            {{ _self.attribute(a) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            </h3>
+
+        {% endfor %}
+{% endblock %}
+
+{% macro attribute(a) %}
+{{ a.name }}({{ a.arguments|default(false) ? a.arguments|json_encode }})
+{% endmacro %}
