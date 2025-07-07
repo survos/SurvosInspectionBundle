@@ -15,7 +15,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 class InspectionService
 {
     public function __construct(
-        private readonly ResourceMetadataCollectionFactoryInterface $resourceMetadataCollectionFactory,
+        private readonly ?ResourceMetadataCollectionFactoryInterface $resourceMetadataCollectionFactory=null,
         private readonly ?RouterInterface $router=null,
         private readonly ?UrlGeneratorInterface $urlGenerator=null
     ) {
@@ -23,6 +23,10 @@ class InspectionService
 
     public function getAllUrlsForResource(string $resourceClass): array
     {
+        if (!$this->resourceMetadataCollectionFactory) {
+            throw new \RuntimeException("MetadataFactory not set, run\ncomposer install api-platform/core");
+        }
+
         $urls = [];
         $routes = [];
         // yikes!  Now the route is here.

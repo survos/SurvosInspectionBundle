@@ -20,6 +20,12 @@ class InspectionController extends AbstractController
         // bin/console api:openapi:export -o openapi.json
         // https://api-platform.com/docs/core/openapi/ for more options
         $fn = $bag->get('kernel.project_dir') . '/openapi.json';
+
+        //if file does not exist, return a 200 with an empty text response
+        if (!file_exists($fn)) {
+            return new Response('', 200, ['Content-Type' => 'application/json']);
+        }
+
 //        $openapi = Reader::readFromJsonFile($fn);
 //        $spec = $openapi->getSerializableData();
 
@@ -76,7 +82,6 @@ class InspectionController extends AbstractController
             return $carry;
         }, []);
         $accessor = new PropertyAccessor();
-
         return $this->render('@SurvosInspection/reflection.html.twig', [
             'classes' => $details,
         ]);

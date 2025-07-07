@@ -1,0 +1,10 @@
+<bg=green;fg=white>                </>
+<bg=green;fg=white> success        </>
+<bg=green;fg=white>                </>
+
+  * <fg=yellow>Next steps:</>
+    1. Get the API keys from https://www.flickr.com/services/api/keys/
+    2. Set the FLICKR_API_KEY and FLICKR_SECRET in your environment (e.g. .env.local or vault)
+
+
+

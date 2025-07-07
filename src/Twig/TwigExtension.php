@@ -11,6 +11,7 @@ use Survos\CoreBundle\Entity\RouteParametersInterface;
 use Survos\InspectionBundle\Services\InspectionService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Twig\TwigFilter;
 
 use function Symfony\Component\String\u;
 
@@ -33,6 +34,15 @@ class TwigExtension extends AbstractExtension
 //            new TwigFunction('sortable_fields', [$this, 'sortableFields']),
             new TwigFunction('searchable_fields', [$this, 'searchableFields']),
             new TwigFunction('search_builder_fields', [$this, 'searchBuilderFields']),
+
+        ];
+    }
+
+    public function getFilters()
+    {
+        return [
+            new TwigFilter('is_array', fn (mixed $s) => is_array($s)),
+            new TwigFilter('array_is_list', fn (mixed $s) => is_array($s) && array_is_list($s)),
         ];
     }
 

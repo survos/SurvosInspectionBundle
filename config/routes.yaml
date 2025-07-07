@@ -1,0 +1,5 @@
+survos_inspection:
+  type: attribute
+  resource:
+    path: '@SurvosInspectionBundle/src/Controller/'
+    namespace: Survos\InspectionBundle\Controller
