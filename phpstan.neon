@@ -8,7 +8,6 @@ parameters:
 #      - 'src/Resources/skeleton'
 #      - */cache/*
        analyse:
-                  - ./vendor
 
     reportUnmatchedIgnoredErrors: false
 #    checkMissingIterableValueType: false
