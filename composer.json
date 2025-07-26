@@ -12,11 +12,11 @@
     "require": {
         "php": "^8.3",
         "survos/core-bundle": "^1.5",
-        "symfony/config": "^6.4 || ^7.1",
-        "symfony/dependency-injection": "^6.4 || ^7.1",
-        "symfony/http-kernel": "^6.4 || ^7.1",
+        "symfony/config": "^7.3",
+        "symfony/dependency-injection": "^7.3",
+        "symfony/http-kernel": "^7.3",
         "twig/twig": "^3.4",
-        "symfony/string": "^6.4 || ^7.1"
+        "symfony/string": "^7.3"
     },
     "require-dev": {
         "api-platform/core": "^4.0",
@@ -35,7 +35,7 @@
             "dev-main": "1.6-dev"
         },
         "symfony": {
-            "require": "^6.4 || ^7.1"
+            "require": "^7.3"
         }
     },
     "conflict": {
