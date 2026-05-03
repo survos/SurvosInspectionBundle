@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Survos\InspectionBundle;
 
 use ApiPlatform\Metadata\UrlGeneratorInterface;
+use Survos\CoreBundle\Traits\HasConfigurableRoutes;
 use Survos\InspectionBundle\Controller\InspectionController;
 use Survos\InspectionBundle\Services\InspectionService;
 use Survos\InspectionBundle\Services\ResourceInspector;
@@ -19,13 +20,24 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 final class SurvosInspectionBundle extends AbstractBundle
 {
+    use HasConfigurableRoutes;
+
     protected string $extensionAlias = 'survos_inspection';
 
     /**
      * @param array<mixed> $config
      */
+    public function build(ContainerBuilder $container): void
+    {
+        parent::build($container);
+        $this->addRouteLoaderCompilerPass($container);
+    }
+
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
+        $this->captureRouteConfig($config);
+        $this->registerRouteLoader($builder);
+
         $builder->autowire(InspectionService::class)
             ->setPublic(true)
             ->setArgument(
@@ -56,9 +68,10 @@ final class SurvosInspectionBundle extends AbstractBundle
 
     public function configure(DefinitionConfigurator $definition): void
     {
-        $definition->rootNode()
-            ->children()
+        $children = $definition->rootNode()->children();
+        $this->addRouteOptions($children, '/inspection');
+        $children
             ->booleanNode('debug')->defaultValue(false)->end()
-            ->end();
+        ->end();
     }
 }
