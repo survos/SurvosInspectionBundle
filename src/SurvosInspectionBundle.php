@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Survos\InspectionBundle;
 
 use ApiPlatform\Metadata\UrlGeneratorInterface;
-use Survos\CoreBundle\Traits\HasConfigurableRoutes;
+use Survos\Kit\Traits\HasConfigurableRoutes;
 use Survos\InspectionBundle\Controller\InspectionController;
 use Survos\InspectionBundle\Services\InspectionService;
 use Survos\InspectionBundle\Services\ResourceInspector;

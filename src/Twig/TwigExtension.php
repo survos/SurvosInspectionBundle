@@ -8,7 +8,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\IriConverterInterface;
 use ApiPlatform\Metadata\UrlGeneratorInterface as ApiUrlGeneratorInterface;
 use ApiPlatform\Symfony\Routing\IriConverter;
-use Survos\CoreBundle\Entity\RouteParametersInterface;
+use Survos\FieldBundle\Entity\RouteParametersInterface;
 use Survos\InspectionBundle\Services\InspectionService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
